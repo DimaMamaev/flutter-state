@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop/models/products.dart';
-import 'package:shop/widgets/product-item/product-item.dart';
+
+import '../../models/products.dart';
+import '../../widgets/product-item/product-item.dart';
 
 class ProductsListScreen extends StatelessWidget {
   @override
@@ -13,7 +14,7 @@ class ProductsListScreen extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
+          childAspectRatio: 2 / 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 15,
         ),
