@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop/providers/cart/cart.dart';
-import 'package:shop/widgets/badge/badge.dart';
+import 'package:shop/screens/cart/cart.dart';
+
+import '../../providers/cart/cart.dart';
+import '../../widgets/badge/badge.dart';
 import '../../widgets/product-list/product-list.dart';
 
 enum SelectedOptions {
@@ -55,7 +57,8 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                       Icons.shopping_cart,
                       color: Colors.white,
                     ),
-                    onPressed: null),
+                    onPressed: () =>
+                        Navigator.of(context).pushNamed(CartScreen.routeName)),
                 value: cartData.itemsCount.toString(),
               ),
             ),
