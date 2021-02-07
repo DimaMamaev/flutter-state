@@ -17,10 +17,9 @@ class ProductsListWidget extends StatelessWidget {
         crossAxisSpacing: 10,
         mainAxisSpacing: 15,
       ),
-      itemBuilder: (ctx, index) => ProductItem(
-        id: productsList[index].id,
-        title: productsList[index].title,
-        imageUrl: productsList[index].imageUrl,
+      itemBuilder: (ctx, index) => ChangeNotifierProvider(
+        create: (ctx) => productsList[index],
+        child: ProductItem(),
       ),
       itemCount: productsList.length,
     );

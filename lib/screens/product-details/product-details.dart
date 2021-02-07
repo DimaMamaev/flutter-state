@@ -12,7 +12,7 @@ class ProductDetailsScreen extends StatelessWidget {
         Provider.of<ProductsProvider>(context).findbyId(currentOrderId);
     return Scaffold(
       appBar: AppBar(
-        title: Text('title'),
+        title: Text(order.title),
       ),
       body: Center(),
     );
