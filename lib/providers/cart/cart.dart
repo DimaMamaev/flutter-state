@@ -8,9 +8,9 @@ class CartItem {
 
   CartItem({
     @required this.id,
-    @required this.price,
-    @required this.quantity,
     @required this.title,
+    @required this.quantity,
+    @required this.price,
   });
 }
 
@@ -18,7 +18,7 @@ class CartProvider with ChangeNotifier {
   Map<String, CartItem> _items = {};
 
   Map<String, CartItem> get items {
-    return {...items};
+    return {..._items};
   }
 
   int get itemsCount {
@@ -57,6 +57,16 @@ class CartProvider with ChangeNotifier {
                 quantity: 1,
               ));
     }
+    notifyListeners();
+  }
+
+  void removeItem(String productId) {
+    _items.remove(productId);
+    notifyListeners();
+  }
+
+  void clear() {
+    _items = {};
     notifyListeners();
   }
 }
