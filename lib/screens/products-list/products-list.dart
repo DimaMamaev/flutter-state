@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/providers/cart/cart.dart';
+import 'package:shop/widgets/badge/badge.dart';
 import '../../widgets/product-list/product-list.dart';
 
 enum SelectedOptions {
@@ -41,7 +44,22 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                 value: SelectedOptions.All,
               ),
             ],
-          )
+          ),
+          Consumer<CartProvider>(
+            builder: (_, cartData, child) => Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: Badge(
+                color: Colors.red,
+                child: IconButton(
+                    icon: Icon(
+                      Icons.shopping_cart,
+                      color: Colors.white,
+                    ),
+                    onPressed: null),
+                value: cartData.itemsCount.toString(),
+              ),
+            ),
+          ),
         ],
       ),
       body: ProductsListWidget(_displayFavorites),
