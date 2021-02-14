@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop/screens/cart/cart.dart';
 
+import '../../screens/cart/cart.dart';
+import '../../widgets/drawer/drawer.dart';
 import '../../providers/cart/cart.dart';
 import '../../widgets/badge/badge.dart';
 import '../../widgets/product-list/product-list.dart';
@@ -65,6 +66,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
           ),
         ],
       ),
+      drawer: AppDrawer(),
       body: ProductsListWidget(_displayFavorites),
     );
     return scaffold;

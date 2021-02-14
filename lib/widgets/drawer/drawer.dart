@@ -9,7 +9,7 @@ class AppDrawer extends StatelessWidget {
       child: Column(
         children: [
           AppBar(
-            title: Text('Drawer'),
+            title: Text('Menu'),
             automaticallyImplyLeading: false,
           ),
           Divider(),
@@ -22,8 +22,8 @@ class AppDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.shop_rounded),
-            title: Text('Shop'),
+            leading: Icon(Icons.shopping_bag_sharp),
+            title: Text('Orders'),
             onTap: () {
               Navigator.of(context)
                   .pushReplacementNamed(OrdersScreen.routeName);
