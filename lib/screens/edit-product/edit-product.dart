@@ -44,7 +44,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _onSaveForm() {
-    _formRef.currentState.save();
+    final isFormValid = _formRef.currentState.validate();
+    if (isFormValid) {
+      _formRef.currentState.save();
+    }
   }
 
   @override
@@ -55,7 +58,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.save_alt_rounded),
-            onPressed: () {},
+            onPressed: () {
+              _onSaveForm();
+            },
           )
         ],
       ),
@@ -79,6 +84,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     description: _editedProduct.description,
                     id: null,
                   );
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please provide a title';
+                  }
+                  return null;
                 },
               ),
               TextFormField(
