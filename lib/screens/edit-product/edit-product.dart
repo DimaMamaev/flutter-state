@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../providers/product/product.dart';
+
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product-screen';
   @override
@@ -11,6 +13,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _descriptionFocusNode = FocusNode();
   final _imageFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
+  final _formRef = GlobalKey<FormState>();
+  var _editedProduct = Product(
+    id: null,
+    title: '',
+    imageUrl: '',
+    price: 0,
+    description: '',
+  );
 
   @override
   void initState() {
@@ -33,15 +43,26 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
+  void _onSaveForm() {
+    _formRef.currentState.save();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit product'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.save_alt_rounded),
+            onPressed: () {},
+          )
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(15),
         child: Form(
+          key: _formRef,
           child: ListView(
             children: [
               TextFormField(
@@ -49,6 +70,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_priceFocusNode);
+                },
+                onSaved: (newValue) {
+                  _editedProduct = Product(
+                    title: newValue,
+                    imageUrl: _editedProduct.imageUrl,
+                    price: _editedProduct.price,
+                    description: _editedProduct.description,
+                    id: null,
+                  );
                 },
               ),
               TextFormField(
@@ -59,11 +89,29 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_descriptionFocusNode);
                 },
+                onSaved: (newValue) {
+                  _editedProduct = Product(
+                    title: _editedProduct.title,
+                    imageUrl: _editedProduct.imageUrl,
+                    price: double.parse(newValue),
+                    description: _editedProduct.description,
+                    id: null,
+                  );
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Description'),
                 maxLines: 3,
                 keyboardType: TextInputType.multiline,
+                onSaved: (newValue) {
+                  _editedProduct = Product(
+                    title: _editedProduct.title,
+                    imageUrl: _editedProduct.imageUrl,
+                    price: _editedProduct.price,
+                    description: newValue,
+                    id: null,
+                  );
+                },
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -95,6 +143,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         textInputAction: TextInputAction.done,
                         controller: _imageUrlController,
                         focusNode: _imageFocusNode,
+                        onFieldSubmitted: (_) {
+                          _onSaveForm();
+                        },
+                        onSaved: (newValue) {
+                          _editedProduct = Product(
+                            title: _editedProduct.title,
+                            imageUrl: newValue,
+                            price: _editedProduct.price,
+                            description: _editedProduct.description,
+                            id: null,
+                          );
+                        },
                       ),
                     ),
                   ),
