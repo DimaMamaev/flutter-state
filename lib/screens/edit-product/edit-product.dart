@@ -109,6 +109,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     id: null,
                   );
                 },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a price';
+                  }
+                  if (double.tryParse(value) == null) {
+                    return 'Please enter valid number';
+                  }
+                  if (double.parse(value) < 0) {
+                    return 'Please enter valid number that is greater than 0';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Description'),
@@ -122,6 +134,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     description: newValue,
                     id: null,
                   );
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please provide a description';
+                  }
+                  if (value.length < 10) {
+                    return 'Please provide a longer description';
+                  }
+                  return null;
                 },
               ),
               Row(
@@ -137,7 +158,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       color: Colors.black,
                     )),
                     child: _imageUrlController.text.isEmpty
-                        ? Text('Enter an image url')
+                        ? Padding(
+                            padding: EdgeInsets.all(5),
+                            child:
+                                Text('Enter an image url to check a preview'))
                         : FittedBox(
                             child: Image.network(
                               _imageUrlController.text,
@@ -165,6 +189,21 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             description: _editedProduct.description,
                             id: null,
                           );
+                        },
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please provide an image Url';
+                          }
+                          if (!value.startsWith('http') &&
+                              !value.startsWith('https')) {
+                            return 'Please provide a valid Url';
+                          }
+                          if (!value.endsWith('.png') &&
+                              !value.endsWith('.jpg') &&
+                              !value.endsWith('.jpeg')) {
+                            return 'Please enter a valid Url';
+                          }
+                          return null;
                         },
                       ),
                     ),
