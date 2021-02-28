@@ -70,15 +70,23 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   void _updateImageUrl() {
     if (!_imageFocusNode.hasFocus) {
+      if ((!_imageUrlController.text.startsWith('http') &&
+              !_imageUrlController.text.startsWith('https')) ||
+          (!_imageUrlController.text.endsWith('.png') &&
+              !_imageUrlController.text.endsWith('.jpg') &&
+              !_imageUrlController.text.endsWith('.jpeg'))) {
+        return;
+      }
       setState(() {});
     }
   }
 
   void _onSaveForm() {
     final isFormValid = _formRef.currentState.validate();
-    if (isFormValid) {
-      _formRef.currentState.save();
+    if (!isFormValid) {
+      return;
     }
+    _formRef.currentState.save();
     if (_editedProduct.id != null) {
       Provider.of<ProductsProvider>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
@@ -86,7 +94,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
       Provider.of<ProductsProvider>(context, listen: false)
           .addProduct(_editedProduct);
     }
-
     Navigator.of(context).pop();
   }
 
@@ -225,6 +232,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         controller: _imageUrlController,
                         focusNode: _imageFocusNode,
                         onFieldSubmitted: (_) {
+                          print(_);
                           _onSaveForm();
                         },
                         onSaved: (newValue) {
