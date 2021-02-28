@@ -51,10 +51,10 @@ class ProductsProvider with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     const endPoint =
         'https://flutter-shop-e0ce3-default-rtdb.europe-west1.firebasedatabase.app/products.json';
-    http
+    return http
         .post(endPoint,
             body: json.encode({
               'title': product.title,
