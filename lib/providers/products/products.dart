@@ -72,9 +72,22 @@ class ProductsProvider with ChangeNotifier {
     });
   }
 
-  void updateProduct(String id, Product updatedProduct) {
+  Future<void> updateProduct(String id, Product updatedProduct) async {
     final updatedIndex = _items.indexWhere((element) => element.id == id);
     if (updatedIndex >= 0) {
+      final endPoint =
+          'https://flutter-shop-e0ce3-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json';
+      try {
+        await http.patch(endPoint,
+            body: json.encode({
+              'title': updatedProduct.title,
+              'description': updatedProduct.description,
+              'imageUrl': updatedProduct.imageUrl,
+              'price': updatedProduct.price,
+            }));
+      } catch (error) {
+        throw error;
+      }
       _items[updatedIndex] = updatedProduct;
       notifyListeners();
     }
