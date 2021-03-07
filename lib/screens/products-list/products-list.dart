@@ -40,6 +40,10 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
     super.didChangeDependencies();
   }
 
+  Future<void> _pullToRefresh(BuildContext context) async {
+    await Provider.of<ProductsProvider>(context).fetchProductsData();
+  }
+
   @override
   Widget build(BuildContext context) {
     var scaffold = Scaffold(
@@ -91,7 +95,9 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ProductsListWidget(_displayFavorites),
+          : RefreshIndicator(
+              onRefresh: () => _pullToRefresh(context),
+              child: ProductsListWidget(_displayFavorites)),
     );
     return scaffold;
   }
