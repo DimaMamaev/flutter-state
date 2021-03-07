@@ -24,25 +24,59 @@ class OrdersProvider with ChangeNotifier {
     return [..._orders];
   }
 
+  Future<void> fetchOrders() async {
+    const endPoint =
+        'https://flutter-shop-e0ce3-default-rtdb.europe-west1.firebasedatabase.app/orders.json';
+    try {
+      final response = await http.get(endPoint);
+      final List<OrderItem> loadedOrders = [];
+      final parsedData = json.decode(response.body) as Map<String, dynamic>;
+      print(parsedData);
+
+      if (parsedData == null) {
+        return;
+      }
+      parsedData.forEach((orderId, orderData) {
+        loadedOrders.add(OrderItem(
+          id: orderId,
+          amount: orderData['amount'],
+          products: (orderData['products'] as List<dynamic>)
+              .map((item) => CartItem(
+                    id: item['id'],
+                    title: item['title'],
+                    quantity: item['quantity'],
+                    price: item['price'],
+                  ))
+              .toList(),
+          dateTime: DateTime.parse(orderData['dateTime']),
+        ));
+      });
+      _orders = loadedOrders.reversed.toList();
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
+  }
+
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     const endPoint =
         'https://flutter-shop-e0ce3-default-rtdb.europe-west1.firebasedatabase.app/orders.json';
     try {
-      final response = await http.post(endPoint,
-          body: json.encode({
-            'amount': total,
-            'dateTime': DateTime.now().toIso8601String(),
-            'products': [
-              cartProducts
-                  .map((cartProd) => {
-                        'id': cartProd.id,
-                        'title': cartProd.title,
-                        'quantity': cartProd.quantity,
-                        'price': cartProd.price,
-                      })
-                  .toList(),
-            ]
-          }));
+      final response = await http.post(
+        endPoint,
+        body: json.encode({
+          'amount': total,
+          'dateTime': DateTime.now().toIso8601String(),
+          'products': cartProducts
+              .map((cp) => {
+                    'id': cp.id,
+                    'title': cp.title,
+                    'quantity': cp.quantity,
+                    'price': cp.price,
+                  })
+              .toList(),
+        }),
+      );
       _orders.insert(
           0,
           OrderItem(
