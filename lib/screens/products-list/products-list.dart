@@ -14,6 +14,7 @@ enum SelectedOptions {
 }
 
 class ProductsListScreen extends StatefulWidget {
+  static const routeName = '/product-list';
   @override
   _ProductsListScreenState createState() => _ProductsListScreenState();
 }
