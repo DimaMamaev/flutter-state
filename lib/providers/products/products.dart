@@ -93,7 +93,14 @@ class ProductsProvider with ChangeNotifier {
     }
   }
 
-  void removeProduct(String id) {
+  Future<void> removeProduct(String id) async {
+    final endPoint =
+        'https://flutter-shop-e0ce3-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json';
+    try {
+      await http.delete(endPoint);
+    } catch (error) {
+      throw error;
+    }
     _items.removeWhere((element) => element.id == id);
     notifyListeners();
   }
