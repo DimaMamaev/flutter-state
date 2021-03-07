@@ -51,6 +51,17 @@ class ProductsProvider with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
+  Future<void> fetchProductsData() async {
+    const endPoint =
+        'https://flutter-shop-e0ce3-default-rtdb.europe-west1.firebasedatabase.app/products.json';
+
+    try {
+      final response = await http.get(endPoint);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   Future<void> addProduct(Product product) {
     const endPoint =
         'https://flutter-shop-e0ce3-default-rtdb.europe-west1.firebasedatabase.app/products.json';

@@ -6,6 +6,7 @@ import '../../widgets/drawer/drawer.dart';
 import '../../providers/cart/cart.dart';
 import '../../widgets/badge/badge.dart';
 import '../../widgets/product-list/product-list.dart';
+import '../../providers/products/products.dart';
 
 enum SelectedOptions {
   Favorites,
@@ -19,6 +20,17 @@ class ProductsListScreen extends StatefulWidget {
 
 class _ProductsListScreenState extends State<ProductsListScreen> {
   bool _displayFavorites = false;
+  bool _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      Provider.of<ProductsProvider>(context).fetchProductsData();
+    }
+    _isInit = false;
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
